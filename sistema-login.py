@@ -1,26 +1,44 @@
+from ast import Try
 from time import sleep
 import os
-from unicodedata import numeric
+import platform
 
 
 ## Altura e largura terminal
 largura_terminal, altura_terminal = os.get_terminal_size()
 
+# Declarando variaveis para funçoes
+login = ''
+
 def limpar_Terminal():
-    os.system('clear')
+    if platform.system() == 'Windows':
+        os.system('cls')
+    else:
+        os.system('clear')
     
 
 def linha(simbulo='='):
     print(simbulo * int(largura_terminal))
     
     
-def cabecalho(palavra):
+def cabecalho(frase):
     limpar_Terminal()
     linha()
-    tam_palavra = len(palavra)
+    tam_palavra = len(frase)
     espaco = (largura_terminal - tam_palavra - 2) / 2
-    print(' '*int(espaco), palavra, ' '*int(espaco))
+    print(' '*int(espaco), frase, ' '*int(espaco))
     linha()
+    
+    
+def erro(frase):
+    limpar_Terminal()
+    linha()
+    tam_palavra = len(frase)
+    espaco = (largura_terminal - tam_palavra - 3) / 2
+    print('\033[1;31m '*int(espaco), frase, ' '*int(espaco), '\033[0;0m')
+    linha()
+    sleep(3)
+    
 
 
 def Login():
@@ -31,52 +49,89 @@ def Login():
         senha = str(input('Senha: ')).strip()
         conta = f'{login}:{senha}' + '\n'
         if conta in registros.readlines():
-            cabecalho('Login Válido')
-            
+            cabecalho('LOGIN CORRETO!!')
             break
         else:
-            print('Login Incorreto!!')
-            
+            erro('Login Incorreto!!')       
 
 
+def ValidarUsuario():
+    usuario_valido = ''
+    validar_registro = open('registros.txt', 'r')
+    for user in validar_registro:
+        temp = user.split(':')          
+        if login == temp[0]:
+            usuario_valido = False
+            break
+        else: 
+            usuario_valido = True
+    if usuario_valido == False:
+        return True
+    elif usuario_valido == True:
+        return False
+    
+        
+        
+        
 def Registro():
-    cabecalho('Registro')
+    registros = open('registros.txt', 'a')
     while True:
-        registros = open('registros.txt', 'a')
+        cabecalho('Registro')
         login = str(input('Digite um novo login: ')).strip()
-        senha = str(input('Digite uma nova senha: ')).strip()
-        registros.write(f'{login}:{senha}\n')
-        registros.close()
+        if ValidarUsuario() == True:
+            senha = str(input('Digite uma nova senha: ')).strip()
+            if confirmar('Confirmar registro?') == True:
+                registros.write(f'{login}:{senha}\n')
+                registros.close()
+                cabecalho('Cadastro concluido!!')
+                sleep(3)
+                break
+            else:
+                if confirmar('Deseja continuar o registro?') == False:
+                    break
+        else:
+            erro('Usuario ja cadastrado!!')
+            if confirmar('Deseja tentar novamente?') == False:
+                break
+        
 
-
+        
 def confirmar(txt='Tem Certeza?'):
     while True:
-        cabecalho('Tem certeza')
+        cabecalho(txt)
         print('[01]. SIM')
         print('[02]. NAO')
         linha()
-        opcao = str(input('> '))
-        if opcao is numeric:
-            if opcao == 1:
-                return True
-            else:
-                break
+        try:
+            opcao = int(input('> '))
+        except:
+            erro('Digite uma opção válida')
+        if opcao == 1:
+            return True
+        elif opcao == 2:
+            return False
         else:
-            cabecalho('Digite uma opçao valida!!')
+            erro('Digite uma opçao valida!!')
+
             
     
 while True:            
     cabecalho('BEM-VINDO')
-    print('[01]. Login')
-    print('[02]. Registro')
-    print('[03]. Sair')
+    print('[1]. Login')
+    print('[2]. Registro')
+    print('[3]. Sair')
     linha()
     opcao = str(input('Digite uma opção: '))
-    if opcao is numeric:
-        if opcao == 1:
+    if opcao.isnumeric():
+        opcao = opcao.replace('0', '')
+        if opcao == '1':
             Login()
-        if opcao == 2:
+        elif opcao == '2':
             Registro()
-        if opcao == 3:
-            break
-        
+        elif opcao == '3':
+            if confirmar('Deseja sair??') == True:
+                break
+        else:
+            erro('Digite uma opçao valida!!')
+    else:
+        erro('Digite uma opçao valida!!')
