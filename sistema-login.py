@@ -20,7 +20,7 @@ def limpar_Terminal():
 def linha(simbulo='='):
     print(simbulo * int(largura_terminal))
     
-    
+
 def cabecalho(frase):
     limpar_Terminal()
     linha()
@@ -51,6 +51,8 @@ def Login():
             conta = f'{login}:{senha}' + '\n'
             if conta in registros.readlines():
                 cabecalho('LOGIN CORRETO!!')
+                cabecalho('VOLTANDO AO INICIO...')
+                sleep(3)
                 break
             else:
                 erro('SENHA INCORRETA!!!')
@@ -77,8 +79,6 @@ def UsuarioExitente():
     elif usuario_existente == True:
         return True
     
-        
-        
         
 def Registro():
     registros = open('registros.txt', 'a')
