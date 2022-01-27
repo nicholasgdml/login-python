@@ -3,7 +3,8 @@
 Sistema de login feito 100% em Python, utilizando bibliotecas nativas. Com uma simples "interface" de terminal.
 
 ## Recursos
----
+## "Banco de Dados"
+- Todos os dados de usuário e senha serão salvos no arquivo "registros.txt"(Futuramente pretendo implementar um banco de dados).
 ## "Interface" Terminal
 - Calcula a largura do terminal e ajusta linhas e centraliza fontes(salva a medida no momento que o terminal roda a aplicação, as linhas não se redimensionam automaticamente).
 - Ao selecionar opções inválidas a aplicação retorna uma mensagem de erro.
