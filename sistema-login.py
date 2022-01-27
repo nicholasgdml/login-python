@@ -42,33 +42,40 @@ def erro(frase):
 
 
 def Login():
-    cabecalho('Login')
     while True:
+        cabecalho('Login')
         registros = open('registros.txt', 'r')
         login = str(input('Usuario: ')).strip()
-        senha = str(input('Senha: ')).strip()
-        conta = f'{login}:{senha}' + '\n'
-        if conta in registros.readlines():
-            cabecalho('LOGIN CORRETO!!')
-            break
+        if UsuarioExitente() == True:
+            senha = str(input('Senha: ')).strip()
+            conta = f'{login}:{senha}' + '\n'
+            if conta in registros.readlines():
+                cabecalho('LOGIN CORRETO!!')
+                break
+            else:
+                erro('SENHA INCORRETA!!!')
+                if confirmar('Deseja tentar novamente?') == False:
+                    break
         else:
-            erro('Login Incorreto!!')       
+            erro('Usuario Inexistente! Tente Novamente')
+            if confirmar('Deseja tentar novamente?') == False:
+                break   
 
 
-def ValidarUsuario():
-    usuario_valido = ''
+def UsuarioExitente():
+    usuario_existente = ''
     validar_registro = open('registros.txt', 'r')
     for user in validar_registro:
         temp = user.split(':')          
         if login == temp[0]:
-            usuario_valido = False
+            usuario_existente = True
             break
         else: 
-            usuario_valido = True
-    if usuario_valido == False:
-        return True
-    elif usuario_valido == True:
+            usuario_existente = False
+    if usuario_existente == False:
         return False
+    elif usuario_existente == True:
+        return True
     
         
         
@@ -78,7 +85,7 @@ def Registro():
     while True:
         cabecalho('Registro')
         login = str(input('Digite um novo login: ')).strip()
-        if ValidarUsuario() == True:
+        if UsuarioExitente() == False:
             senha = str(input('Digite uma nova senha: ')).strip()
             if confirmar('Confirmar registro?') == True:
                 registros.write(f'{login}:{senha}\n')
@@ -93,6 +100,7 @@ def Registro():
             erro('Usuario ja cadastrado!!')
             if confirmar('Deseja tentar novamente?') == False:
                 break
+        
         
 
         
