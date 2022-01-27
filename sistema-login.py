@@ -37,10 +37,10 @@ def erro(frase):
     print('\033[1;31m '*int(espaco), frase, ' '*int(espaco), '\033[0;0m')
     linha()
     sleep(3)
-    
 
 
 def Login():
+    global login
     while True:
         cabecalho('Login')
         registros = open('registros.txt', 'r')
@@ -50,6 +50,7 @@ def Login():
             conta = f'{login}:{senha}' + '\n'
             if conta in registros.readlines():
                 cabecalho('LOGIN CORRETO!!')
+                sleep(3)
                 cabecalho('VOLTANDO AO INICIO...')
                 sleep(3)
                 break
@@ -87,7 +88,7 @@ def Registro():
         
         
 def UsuarioExitente():
-    usuario_existente = ''
+    usuario_existente = None
     validar_registro = open('registros.txt', 'r')
     for user in validar_registro:
         temp = user.split(':')          
