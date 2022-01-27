@@ -1,4 +1,5 @@
 from ast import Try
+import enum
 from time import sleep
 import os
 import platform
@@ -7,8 +8,6 @@ import platform
 ## Altura e largura terminal
 largura_terminal, altura_terminal = os.get_terminal_size()
 
-# Declarando variaveis para funçoes
-login = ''
 
 def limpar_Terminal():
     if platform.system() == 'Windows':
@@ -63,24 +62,9 @@ def Login():
             if confirmar('Deseja tentar novamente?') == False:
                 break   
 
-
-def UsuarioExitente():
-    usuario_existente = ''
-    validar_registro = open('registros.txt', 'r')
-    for user in validar_registro:
-        temp = user.split(':')          
-        if login == temp[0]:
-            usuario_existente = True
-            break
-        else: 
-            usuario_existente = False
-    if usuario_existente == False:
-        return False
-    elif usuario_existente == True:
-        return True
-    
         
 def Registro():
+    global login
     registros = open('registros.txt', 'a')
     while True:
         cabecalho('Registro')
@@ -102,7 +86,20 @@ def Registro():
                 break
         
         
-
+def UsuarioExitente():
+    usuario_existente = ''
+    validar_registro = open('registros.txt', 'r')
+    for user in validar_registro:
+        temp = user.split(':')          
+        if login == temp[0]:
+            usuario_existente = True
+            break
+        else: 
+            usuario_existente = False
+    if usuario_existente:
+        return True
+    return False
+        
         
 def confirmar(txt='Tem Certeza?'):
     while True:
@@ -112,7 +109,7 @@ def confirmar(txt='Tem Certeza?'):
         linha()
         try:
             opcao = int(input('> '))
-        except:
+        except ValueError:
             erro('Digite uma opção válida')
         if opcao == 1:
             return True
@@ -120,7 +117,6 @@ def confirmar(txt='Tem Certeza?'):
             return False
         else:
             erro('Digite uma opçao valida!!')
-
             
     
 while True:            
