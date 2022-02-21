@@ -45,7 +45,7 @@ def Login():
         registros = open('registros.txt', 'r')
         login = str(input('Usuario: ')).strip()
         if UsuarioExitente() == True:
-            senha = str(input('Senha: ')).strip()
+            senha = getpass('Senha: ')
             conta = f'{login}:{senha}' + '\n'
             if conta in registros.readlines():
                 cabecalho('LOGIN CORRETO!!')
@@ -70,15 +70,21 @@ def Registro():
         cabecalho('Registro')
         login = str(input('Digite um novo login: ')).strip()
         if UsuarioExitente() == False:
-            senha = str(input('Digite uma nova senha: ')).strip()
-            if confirmar('Confirmar registro?') == True:
-                registros.write(f'{login}:{senha}\n')
-                registros.close()
-                cabecalho('Cadastro concluido!!')
-                sleep(3)
-                break
+            senha = getpass('Digite uma nova senha: ')
+            confirmar_senha = getpass('Digite novamente a senha: ')
+            if senha == confirmar_senha:
+                if confirmar('Confirmar registro?') == True:
+                    registros.write(f'{login}:{senha}\n')
+                    registros.close()
+                    cabecalho('Cadastro concluido!!')
+                    sleep(3)
+                    break
+                else:
+                    if confirmar('Deseja tentar novamente?') == False:
+                        break
             else:
-                if confirmar('Deseja continuar o registro?') == False:
+                erro('Credenciais não conferem, tente-novamente!!')
+                if confirmar('Deseja tentar novamente?') == False:
                     break
         else:
             erro('Usuario ja cadastrado!!')
