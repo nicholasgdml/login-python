@@ -1,5 +1,3 @@
-from ast import Try
-import enum
 from time import sleep
 import os
 import platform
