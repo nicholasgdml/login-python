@@ -1,6 +1,7 @@
 from time import sleep
 import os
 import platform
+from getpass import getpass
 
 
 ## Altura e largura terminal
