@@ -22,9 +22,9 @@ def linha(simbulo='='):
 def cabecalho(frase):
     """Função apenas estética que limpa o terminal, cria um cabeçalho com linhas e centraliza a frase automaticamente:
     ex:
-    =========================================
+     =========================================
                     Olá, Mundo!!
-    =========================================
+     =========================================
     """
     global largura_terminal
     largura_terminal, altura_terminal = os.get_terminal_size()
