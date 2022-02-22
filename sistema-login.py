@@ -4,11 +4,10 @@ import platform
 from getpass import getpass
 
 
-## Altura e largura terminal
-largura_terminal, altura_terminal = os.get_terminal_size()
-
-
 def limpar_Terminal():
+    """Função que limpa o terminal
+        Utiliza a biblioteca 'os' para identificar o SO do usuário,
+        para assim executar o comando clear/cls"""
     if platform.system() == 'Windows':
         os.system('cls')
     else:
@@ -16,10 +15,19 @@ def limpar_Terminal():
     
 
 def linha(simbulo='='):
+    """Faz um print de uma linha feita de qualquer símbolo(padrão '=') que se encaixa perfeitamente no Terminal."""
     print(simbulo * int(largura_terminal))
     
 
 def cabecalho(frase):
+    """Função apenas estética que limpa o terminal, cria um cabeçalho com linhas e centraliza a frase automaticamente:
+    ex:
+    =========================================
+                    Olá, Mundo!!
+    =========================================
+    """
+    global largura_terminal
+    largura_terminal, altura_terminal = os.get_terminal_size()
     limpar_Terminal()
     linha()
     tam_palavra = len(frase)
@@ -29,6 +37,7 @@ def cabecalho(frase):
     
     
 def erro(frase):
+    """Funçao estética que retorna um cabeçalho com a frase na cor vermelha"""
     limpar_Terminal()
     linha()
     tam_palavra = len(frase)
@@ -39,11 +48,13 @@ def erro(frase):
 
 
 def Login():
+    """Função que executa o Login
+        Ele lê o arquivo registro.txt e analisa nome por nome/senha por senha, e pode retornar erro caso user/senha estejam incorretos ou até se o user existe o não"""
     global login
     while True:
         cabecalho('Login')
         registros = open('registros.txt', 'r')
-        login = str(input('Usuario: ')).strip()
+        login = str(input('Usuário: ')).strip()
         if UsuarioExitente() == True:
             senha = getpass('Senha: ')
             conta = f'{login}:{senha}' + '\n'
@@ -58,12 +69,14 @@ def Login():
                 if confirmar('Deseja tentar novamente?') == False:
                     break
         else:
-            erro('Usuario Inexistente! Tente Novamente')
+            erro('Usuário Inexistente! Tente Novamente')
             if confirmar('Deseja tentar novamente?') == False:
                 break   
 
         
 def Registro():
+    """Função que executa o Registro
+    Ela cria o user e senha no arquivo registros.txt(no formato 'user:senha', consegue analisar se o usuário ja foi cadastrado e também tem uma confirmação de senha para o usuário não criar um login errado"""
     global login
     registros = open('registros.txt', 'a')
     while True:
@@ -76,14 +89,14 @@ def Registro():
                 if confirmar('Confirmar registro?') == True:
                     registros.write(f'{login}:{senha}\n')
                     registros.close()
-                    cabecalho('Cadastro concluido!!')
+                    cabecalho('Cadastro concluído!!')
                     sleep(3)
                     break
                 else:
                     if confirmar('Deseja tentar novamente?') == False:
                         break
             else:
-                erro('Credenciais não conferem, tente-novamente!!')
+                erro('Senhas não conferem, tente-novamente!!')
                 if confirmar('Deseja tentar novamente?') == False:
                     break
         else:
@@ -93,6 +106,7 @@ def Registro():
         
         
 def UsuarioExitente():
+    """Análisa todos os users e análisa se aquele user foi utilizado, retornando True ou False"""
     usuario_existente = None
     validar_registro = open('registros.txt', 'r')
     for user in validar_registro:
@@ -108,6 +122,7 @@ def UsuarioExitente():
         
         
 def confirmar(txt='Tem Certeza?'):
+    """Função que com um menu simples de sim ou não, que retorna True ou False"""
     while True:
         cabecalho(txt)
         print('[01]. SIM')
