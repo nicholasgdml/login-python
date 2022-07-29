@@ -14,11 +14,11 @@ def limpar_Terminal():
         os.system('clear')
     
 
-def linha(simbulo='='):
+def linha(simbolo='='):
     """Faz um print de uma linha feita de qualquer símbolo(padrão '=') que se encaixa perfeitamente no Terminal."""
     global largura_terminal
     largura_terminal, altura_terminal = os.get_terminal_size()
-    print(simbulo * int(largura_terminal))
+    print(simbolo * int(largura_terminal))
     
 
 def cabecalho(frase):
